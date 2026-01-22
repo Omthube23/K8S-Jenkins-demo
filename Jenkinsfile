@@ -13,10 +13,23 @@ spec:
     volumeMounts:
     - name: dockersock
       mountPath: /var/run/docker.sock
+
+  - name: kubectl
+    image: bitnami/kubectl:latest
+    command: ["cat"]
+    tty: true
+    volumeMounts:
+    - name: kubeconfig
+      mountPath: /root/.kube
+
   volumes:
   - name: dockersock
     hostPath:
       path: /var/run/docker.sock
+
+  - name: kubeconfig
+    hostPath:
+      path: /home/ec2-user/.kube
 """
         }
     }
@@ -35,5 +48,14 @@ spec:
                 }
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                container('kubectl') {
+                    sh 'kubectl apply -f k8s/'
+                }
+            }
+        }
     }
 }
+
