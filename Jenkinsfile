@@ -16,7 +16,7 @@ spec:
 
   - name: kubectl
     image: bitnami/kubectl:latest
-    command: ["cat"]
+    command: ["sh", "-c", "cat"]
     tty: true
 
   volumes:
@@ -51,3 +51,4 @@ spec:
         }
     }
 }
+
