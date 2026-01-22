@@ -18,18 +18,11 @@ spec:
     image: bitnami/kubectl:latest
     command: ["cat"]
     tty: true
-    volumeMounts:
-    - name: kubeconfig
-      mountPath: /root/.kube
 
   volumes:
   - name: dockersock
     hostPath:
       path: /var/run/docker.sock
-
-  - name: kubeconfig
-    hostPath:
-      path: /home/ec2-user/.kube
 """
         }
     }
@@ -58,4 +51,3 @@ spec:
         }
     }
 }
-
