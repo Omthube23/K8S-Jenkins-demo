@@ -13,12 +13,6 @@ spec:
     volumeMounts:
     - name: dockersock
       mountPath: /var/run/docker.sock
-
-  - name: kubectl
-    image: bitnami/kubectl:latest
-    command: ["sh", "-c", "cat"]
-    tty: true
-
   volumes:
   - name: dockersock
     hostPath:
@@ -34,6 +28,20 @@ spec:
             }
         }
 
+        stage('Install kubectl') {
+            steps {
+                container('docker') {
+                    sh '''
+                      apk add --no-cache curl
+                      curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+                      chmod +x kubectl
+                      mv kubectl /usr/local/bin/kubectl
+                      kubectl version --client
+                    '''
+                }
+            }
+        }
+
         stage('Build Image') {
             steps {
                 container('docker') {
@@ -44,7 +52,7 @@ spec:
 
         stage('Deploy to Kubernetes') {
             steps {
-                container('kubectl') {
+                container('docker') {
                     sh 'kubectl apply -f k8s/'
                 }
             }
