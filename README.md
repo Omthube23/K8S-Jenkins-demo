@@ -1,5 +1,3 @@
----
-
 ```markdown
 # 🚀 Jenkins CI/CD Pipeline on Kubernetes (Minikube)
 
@@ -370,5 +368,3 @@ App is updated in Kubernetes
 This is a real CI/CD pipeline.
 
 ````
-
----
